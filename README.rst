@@ -1,9 +1,9 @@
-Template for the Read the Docs tutorial
-=======================================
+Curator Project Documentation
+=============================
 
-This GitHub template includes fictional Python library
-with some basic Sphinx docs.
+This GitHub repository includes documentation for the Curator project.
 
-Read the tutorial here:
+GitHub project for Curator is here:
 
-https://docs.readthedocs.io/en/stable/tutorial/
+https://github.com/operate-first/curator
+

@@ -1,7 +1,7 @@
 Welcome to Curator's documentation!
 ===================================
 
-**Curator** (cu·ra·tor) is a An infrastructure consumption showback project for OCP.
+**Curator** (/ˈkyo͝orˌādər/) is an infrastructure consumption showback project for OCP.
 
 Check out the :doc:`usage` section for further information, including
 how to :ref:`installation` the project.
@@ -16,4 +16,5 @@ Contents
 .. toctree::
 
    usage
+   installation
    api
