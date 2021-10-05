@@ -1,9 +1,9 @@
 Welcome to Curator's documentation!
 ===================================
 
-**Curator** (/ˈkyo͝orˌādər/) is an infrastructure consumption showback project for OCP.
+**Curator** (/ˈkyo͝orˌādər/) is an infrastructure consumption analysis project for OCP.
 
-Check out the :doc:`usage` section for further information, including
+Check out the :doc:`about` section for further information, including
 how to :ref:`installation` the project.
 
 .. note::
@@ -15,6 +15,12 @@ Contents
 
 .. toctree::
 
-   usage
+   about
+   release
+   architecture
+   features
+   requirements
+   database
+   s3
    installation
    api
