@@ -4,7 +4,7 @@ Welcome to Curator's documentation!
 **Curator** (/ˈkyo͝orˌādər/) is an infrastructure consumption analysis project for OCP.
 
 Check out the :doc:`about` section for further information, including
-how to :ref:`installation` the project.
+how to :ref:`install` the project.
 
 .. note::
 
