@@ -16,34 +16,33 @@ API
 
    -  Install CRD
 
-   This part was generated using
-   `kubebuilder <https://github.com/kubernetes-sigs/kubebuilder>`__,
-   which requires go v1.16+.
+      This part was generated using
+      `kubebuilder <https://github.com/kubernetes-sigs/kubebuilder>`__,
+      which requires go v1.16+.
 
-   ::
 
-       To use prebuilt image:
+      To use prebuilt image:
 
-   .. code:: shell
+      .. code:: shell
 
-       cd apis/report
-       make install
-       make deploy IMG=quay.io/operate-first/curator-crd
-       cd ../..
+          cd apis/report
+          make install
+          make deploy IMG=quay.io/operate-first/curator-crd
+          cd ../..
 
-   ::
 
-       If you would like to build CRD from scratch or you made change to the apis/report scource code:
+      If you would like to build CRD from scratch or you made change to the apis/report scource code:
 
-   .. code:: shell
+      .. code:: shell
 
-       cd apis/report
-       make install
-       make docker-build docker-push IMG=<some-registry>/<project-name>:tag
-       make deploy IMG=<some-registry>/<project-name>:tag
-       cd ../..
+          cd apis/report
+          make install
+          make docker-build docker-push IMG=<some-registry>/<project-name>:tag
+          make deploy IMG=<some-registry>/<project-name>:tag
+          cd ../..
 
    -  Create a example ``Report`` to define specification of report
+
 
       -  reportingEnd: `RFC
          3339 <https://datatracker.ietf.org/doc/html/rfc3339>`__
@@ -55,9 +54,23 @@ API
          metrics are grouped by namespace and accumulated by taking sum
          over the N days reportPeriod.)
 
-         .. code:: shell
+      .. code:: yaml
 
-             oc apply -f apis/report/config/samples/batch_v1_report.yaml
+        apiVersion: batch.curator.openshift.io/v1
+        kind: Report
+        namespace: report-system
+        metadata:
+          name: report-sample
+        spec:
+          reportPeriod: Week
+          namespace: koku-metrics-operator
+          reportingEnd: "2021-08-26T00:00:00Z"  # prevents Reports targeting future time
+
+      Create to Report you just defined
+
+      .. code:: shell
+
+          oc apply -f apis/report/config/samples/batch_v1_report.yaml
 
    -  Deploy the HTTP API
 
@@ -65,10 +78,9 @@ API
 
           kustomize build apis | oc apply -f-
 
-   -  Access ``Report`` data base on namespace and name of ``Report``
-      you just created. For example:
+#. Access ``Report`` data base on namespace and name of ``Report`` you just created. For example:
 
-      .. code:: shell
+  .. code:: shell
 
-          oc port-forward $(oc get pods -l=app=curator-api -o name) 5000:5000
-          curl -XGET "http://localhost:5000/report?reportName=report-sample&reportNamespace=report-system"
+      oc port-forward $(oc get pods -l=app=curator-api -o name) 5000:5000
+      curl -XGET "http://localhost:5000/report?reportName=report-sample&reportNamespace=report-system"
