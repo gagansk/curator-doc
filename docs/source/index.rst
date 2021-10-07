@@ -24,3 +24,5 @@ Contents
    s3
    installation
    api
+   test
+
