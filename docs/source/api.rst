@@ -56,6 +56,7 @@ API
 
       .. code:: yaml
 
+        # apis/report/config/samples/batch_v1_report.yaml
         apiVersion: batch.curator.openshift.io/v1
         kind: Report
         namespace: report-system
