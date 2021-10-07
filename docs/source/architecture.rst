@@ -3,6 +3,10 @@ Architecture
 
 System Design
 -------------
-<To Do>
+
+.. image:: images/sysDesign.png
+    :width: 600px
+    :align: center
+    :alt: alternate text
 
 
