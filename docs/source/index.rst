@@ -20,8 +20,6 @@ Contents
    architecture
    features
    requirements
-   database
-   s3
    installation
    api
    test
