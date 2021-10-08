@@ -2,27 +2,24 @@ API
 ===
 
 
-.. autosummary::
-   :toctree: generated
+**API Deployment** 
 
-   curator
+Deploy the API to Openshift
 
-#. Deploy the API to Openshift
-
-   -  Copy configuration file:
+   1.  Copy configuration file:
 
       .. code:: shell
 
           mkdir -p apis/config; cp Documentation/config/config.env apis/config/config.env
 
-   -  Install CRD
+   2.  Install CRD
 
-      This part was generated using
-      `kubebuilder <https://github.com/kubernetes-sigs/kubebuilder>`__,
-      which requires go v1.16+.
+      This part will be generated using
+      `kubebuilder <https://github.com/kubernetes-sigs/kubebuilder>`_,
+      which requires `Go <https://golang.org/doc/go1.16>`_ v1.16+.
 
 
-      To use prebuilt image:
+      To use a prebuilt image, follow the below steps:
 
       .. code:: shell
 
@@ -31,8 +28,8 @@ API
           make deploy IMG=quay.io/operate-first/curator-crd
           cd ../..
 
-
-      If you would like to build CRD from scratch or you made change to the apis/report scource code:
+      If you would like to build CRD from scratch or you made changes to the apis/report source code, 
+      then follow the below steps:
 
       .. code:: shell
 
@@ -42,14 +39,14 @@ API
           make deploy IMG=<some-registry>/<project-name>:tag
           cd ../..
 
-   -  Create a example ``Report`` to define specification of report
+   3.  Create a sample ``Report`` by defining the paramaters
 
 
       -  reportingEnd: `RFC
-         3339 <https://datatracker.ietf.org/doc/html/rfc3339>`__
+         3339 <https://datatracker.ietf.org/doc/html/rfc3339>`_
          Datetime. Create reports for the past N days until reportingEnd
          (includes reportingEnd).
-      -  reportPeriod: String, one of Day,Week,Month. Report period N =
+      -  reportPeriod: String, one of Day, Week, Month. Report period N =
          1, 7, 30 days.
       -  namespace: String. Show report for namespace only. (Report
          metrics are grouped by namespace and accumulated by taking sum
@@ -74,15 +71,24 @@ API
 
           oc apply -f apis/report/config/samples/batch_v1_report.yaml
 
-   -  Deploy the HTTP API
+   4.  Deploy the HTTP API
 
       .. code:: shell
 
           kustomize build apis | oc apply -f-
 
-#. Access ``Report`` data base on namespace and name of ``Report`` you just created. For example:
+**Access API**
+
+Access the ``Report`` database on namespace and name of ``Report`` you just created. For example:
 
   .. code:: shell
 
       oc port-forward $(oc get pods -l=app=curator-api -o name) 5000:5000
       curl -XGET "http://localhost:5000/report?reportName=report-sample&reportNamespace=report-system"
+
+
+
+.. autosummary::
+   :toctree: generated
+
+   curator
