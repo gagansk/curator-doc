@@ -32,3 +32,12 @@ Project Curator is an open-source project to provide infrastructure usage report
 * Raw OCP data download
 
 For more information and to know how to use these features, refer the :ref:`features` section.
+
+Known Bugs
+----------
+These are the list of bugs that are known to the Engineering team. They don't affect the performance or the features in Project Curator. If you observe any bugs, please report them `here <https://github.com/operate-first/curator/issues/new>`_.
+
+* `Issue105 <https://github.com/operate-first/curator/issues/105>`_ - Database logging failure observed.
+
+* `Issue110 <https://github.com/operate-first/curator/issues/110>`_ - Database change not taking effect immediately.
+
