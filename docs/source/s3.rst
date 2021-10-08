@@ -1,7 +1,7 @@
-S3
-==
+Optional S3 Storage
+===================
 
 Long Term Storage
 -----------------
-<ToDo>
+
 
