@@ -6,15 +6,18 @@ To run Project Curator, the users are expected to meet the prerequisites listed 
 Prerequisite
 -----------
 
-* Admin access to OpenShift 4.5+
+**Admin access to OpenShift 4.5+**
 
-<ToDo>
 
-* Install Koku Metrics Operator
+**Install Koku Metrics Operator**
 
-<ToDo>
+* You need to install koku-metrics-operator either via operator-hub or command line.
 
-* Install PostgreSQL Image
+* We are currently using koku-metrics-operator version 0.9.8 with koku-metric config specified `here. <https://github.com/operate-first/curator/blob/main/Documentation/config/kokumetris-cfg.yaml>`_
 
-<ToDo>
 
+**Install PostgreSQL Image**
+
+* Need to have postgres database up and running in cluster to store all information.
+
+* We are currently using postgres version 10.X and config file specified `here. <https://github.com/operate-first/curator/blob/main/Documentation/config/postgres-database-cfg.yaml>`_
