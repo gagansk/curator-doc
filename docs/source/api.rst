@@ -6,13 +6,8 @@ API
 
 Deploy the API to Openshift
 
-   1.  Copy configuration file:
 
-      .. code:: shell
-
-          mkdir -p apis/config; cp Documentation/config/config.env apis/config/config.env
-
-   2.  Install CRD
+   1.  Install CRD
 
       This part will be generated using
       `kubebuilder <https://github.com/kubernetes-sigs/kubebuilder>`_,
@@ -39,18 +34,38 @@ Deploy the API to Openshift
           make deploy IMG=<some-registry>/<project-name>:tag
           cd ../..
 
-   3.  Create a sample ``Report`` by defining the paramaters
+   2.  Deploy the HTTP API
+
+      .. code:: shell
+
+          kustomize build apis | oc apply -f-
+
+   3.1  Download Raw Koku-metric report for given time frame
 
 
-      -  reportingEnd: `RFC
+
+      .. code:: shell
+
+        oc port-forward $(oc get pods -l=app=curator-api -o name) 5000:5000
+        curl -XGET "http://localhost:5000/download?start=2021-08-22%2003:00:00.000000&end=2021-08-22%2004:00:00.000000"
+
+   3.2  Create a sample ``Report`` by defining the parameters
+
+
+      -  reportingEnd: Required, `RFC
          3339 <https://datatracker.ietf.org/doc/html/rfc3339>`_
          Datetime. Create reports for the past N days until reportingEnd
          (includes reportingEnd).
-      -  reportPeriod: String, one of Day, Week, Month. Report period N =
+      -  reportingStart: Optional, `RFC
+         3339 <https://datatracker.ietf.org/doc/html/rfc3339>`_
+         Datetime.
+      -  reportPeriod: Optional, String, one of Day, Week, Month. Report period N =
          1, 7, 30 days.
-      -  namespace: String. Show report for namespace only. (Report
-         metrics are grouped by namespace and accumulated by taking sum
-         over the N days reportPeriod.)
+      -  namespace: Optional, String. Show report for namespace only. If omitted, show report for all namespace.
+
+      Method 1: time frame report
+      Provide parameter for both ``reportingStart`` and ``reportingEnd``. (``reportPeriod`` will be ignored if provided)
+      Result report contains all raw CPU and memory metrics for time frame [``reportingStart``, ``reportingEnd``).
 
       .. code:: yaml
 
@@ -59,32 +74,45 @@ Deploy the API to Openshift
         kind: Report
         namespace: report-system
         metadata:
-          name: report-sample
+          name: timeframe-report-sample
         spec:
-          reportPeriod: Week
+          reportingStart: "2021-10-25T00:00:00Z"
+          reportingEnd: "2021-10-26T00:00:00Z"  # prevents Reports targeting future time
           namespace: koku-metrics-operator
-          reportingEnd: "2021-08-26T00:00:00Z"  # prevents Reports targeting future time
 
-      Create to Report you just defined
+
+      Method 2: stand daily, weekly, monthly report
+      Provide parameter for both ``reportPeriod`` and ``reportingEnd``.
+      Result report contains all raw CPU and memory metrics for the past N days until reportingEnd (includes reportingEnd).
+
+      .. code:: yaml
+
+        # apis/report/config/samples/batch_v1_report.yaml
+        apiVersion: batch.curator.openshift.io/v1
+        kind: Report
+        namespace: report-system
+        metadata:
+          name: daily-report-sample
+        spec:
+          reportingEnd: "2021-08-26T00:00:00Z"  # prevents Reports targeting future time
+          reportPeriod: Day
+          namespace: koku-metrics-operator
+
+      Create one of two Report above you just defined
 
       .. code:: shell
 
+          oc project report-system
+          # Using project "report-system" on server ...
           oc apply -f apis/report/config/samples/batch_v1_report.yaml
 
-   4.  Deploy the HTTP API
+
+      Access the ``Report`` database on namespace and name of ``Report`` you just created. For example:
 
       .. code:: shell
 
-          kustomize build apis | oc apply -f-
-
-**Access API**
-
-Access the ``Report`` database on namespace and name of ``Report`` you just created. For example:
-
-  .. code:: shell
-
-      oc port-forward $(oc get pods -l=app=curator-api -o name) 5000:5000
-      curl -XGET "http://localhost:5000/report?reportName=report-sample&reportNamespace=report-system"
+        oc port-forward $(oc get pods -l=app=curator-api -o name) 5000:5000
+        curl -XGET "http://localhost:5000/report?reportName=daily-report-sample&reportNamespace=report-system"
 
 
 
