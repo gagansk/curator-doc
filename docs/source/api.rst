@@ -40,9 +40,7 @@ Deploy the API to Openshift
 
           kustomize build apis | oc apply -f-
 
-   3.1  Download Raw Koku-metric report for given time frame
-
-
+   3.1  Download Raw Koku-Metric-Operator report for given time frame
 
       .. code:: shell
 
@@ -51,11 +49,9 @@ Deploy the API to Openshift
 
    3.2  Create a sample ``Report`` by defining the parameters
 
-
       -  reportingEnd: Required, `RFC
          3339 <https://datatracker.ietf.org/doc/html/rfc3339>`_
-         Datetime. Create reports for the past N days until reportingEnd
-         (includes reportingEnd).
+         Datetime.
       -  reportingStart: Optional, `RFC
          3339 <https://datatracker.ietf.org/doc/html/rfc3339>`_
          Datetime.
@@ -63,8 +59,10 @@ Deploy the API to Openshift
          1, 7, 30 days.
       -  namespace: Optional, String. Show report for namespace only. If omitted, show report for all namespace.
 
-      Method 1: time frame report
+      Method 1: Time frame report
+
       Provide parameter for both ``reportingStart`` and ``reportingEnd``. (``reportPeriod`` will be ignored if provided)
+
       Result report contains all raw CPU and memory metrics for time frame [``reportingStart``, ``reportingEnd``).
 
       .. code:: yaml
@@ -81,9 +79,11 @@ Deploy the API to Openshift
           namespace: koku-metrics-operator
 
 
-      Method 2: stand daily, weekly, monthly report
+      Method 2: Standard daily, weekly, monthly report
+
       Provide parameter for both ``reportPeriod`` and ``reportingEnd``.
-      Result report contains all raw CPU and memory metrics for the past N days until reportingEnd (includes reportingEnd).
+
+      Result report contains all raw CPU and memory metrics for the past N days until reportingEnd (including reportingEnd).
 
       .. code:: yaml
 
@@ -98,7 +98,7 @@ Deploy the API to Openshift
           reportPeriod: Day
           namespace: koku-metrics-operator
 
-      Create one of two Report above you just defined
+      Create one of the two Reports above you just defined
 
       .. code:: shell
 
@@ -107,7 +107,7 @@ Deploy the API to Openshift
           oc apply -f apis/report/config/samples/batch_v1_report.yaml
 
 
-      Access the ``Report`` database on namespace and name of ``Report`` you just created. For example:
+      For example, access the Report ``daily-report-sample`` on namespace ``report-system``
 
       .. code:: shell
 
