@@ -24,7 +24,7 @@ Deploy the API to Openshift
           cd ../..
 
       If you would like to build CRD from scratch or you made changes to the apis/report source code, 
-      then follow the following steps:
+      then follow the steps:
 
       .. code:: shell
 
@@ -49,6 +49,15 @@ Deploy the API to Openshift
 
       ``start`` and ``end`` parameters will be cast to PostgreSQL timestamp. Therefore multiple formats are supported.
 
+      Downloaded report follows similar structure of a Koku-Metrics-Operator upload report.
+      ::
+
+          <start>-<end>-koku-metrics.tar.gz
+          ├── <start>-<end>-koku-metrics.0.csv
+          ├── <start>-<end>-koku-metrics.1.csv
+          ├── <start>-<end>-koku-metrics.2.csv
+          └── <start>-<end>-koku-metrics.3.csv
+
    3.2  Create a sample ``Report`` by defining the parameters
 
       -  reportingEnd: Required, `RFC
@@ -61,7 +70,7 @@ Deploy the API to Openshift
          1, 7, 30 days.
       -  namespace: Optional, String. Show report for namespace only. If omitted, show report for all namespace.
 
-      Method 1: Time frame report
+      **Method 1**: Time frame report
 
       Provide parameter for both ``reportingStart`` and ``reportingEnd``. (``reportPeriod`` will be ignored if provided)
 
@@ -81,7 +90,7 @@ Deploy the API to Openshift
           namespace: koku-metrics-operator
 
 
-      Method 2: Standard daily, weekly, monthly report
+      **Method 2**: Standard daily, weekly, monthly report
 
       Provide parameter for both ``reportPeriod`` and ``reportingEnd``.
 
