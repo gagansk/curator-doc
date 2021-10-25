@@ -49,7 +49,7 @@ Deploy the API to Openshift
 
       ``start`` and ``end`` parameters will be cast to PostgreSQL timestamp. Therefore multiple formats are supported.
 
-      Downloaded report follows similar structure of a Koku-Metrics-Operator upload report.
+      Downloaded report follows similar structure of a Koku-Metrics-Operator uploaded report.
       ::
 
           <start>-<end>-koku-metrics.tar.gz
