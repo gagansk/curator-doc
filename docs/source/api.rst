@@ -24,7 +24,7 @@ Deploy the API to Openshift
           cd ../..
 
       If you would like to build CRD from scratch or you made changes to the apis/report source code, 
-      then follow the below steps:
+      then follow the following steps:
 
       .. code:: shell
 
@@ -40,12 +40,14 @@ Deploy the API to Openshift
 
           kustomize build apis | oc apply -f-
 
-   3.1  Download Raw Koku-Metric-Operator report for given time frame
+   3.1  Download raw Koku-Metric-Operator reports for given time frame
 
       .. code:: shell
 
         oc port-forward $(oc get pods -l=app=curator-api -o name) 5000:5000
         curl -XGET "http://localhost:5000/download?start=2021-08-22%2003:00:00.000000&end=2021-08-22%2004:00:00.000000"
+
+      ``start`` and ``end`` parameters will be cast to PostgreSQL timestamp. Therefore multiple formats are supported.
 
    3.2  Create a sample ``Report`` by defining the parameters
 
@@ -55,7 +57,7 @@ Deploy the API to Openshift
       -  reportingStart: Optional, `RFC
          3339 <https://datatracker.ietf.org/doc/html/rfc3339>`_
          Datetime.
-      -  reportPeriod: Optional, String, one of Day, Week, Month. Report period N =
+      -  reportPeriod: Optional, String. One of Day, Week, Month. Report period N =
          1, 7, 30 days.
       -  namespace: Optional, String. Show report for namespace only. If omitted, show report for all namespace.
 
@@ -63,7 +65,7 @@ Deploy the API to Openshift
 
       Provide parameter for both ``reportingStart`` and ``reportingEnd``. (``reportPeriod`` will be ignored if provided)
 
-      Result report contains all raw CPU and memory metrics for time frame [``reportingStart``, ``reportingEnd``).
+      Result report contains raw CPU and memory metrics for time frame [``reportingStart``, ``reportingEnd``) in project ``namespace`` (if provided).
 
       .. code:: yaml
 
@@ -83,7 +85,7 @@ Deploy the API to Openshift
 
       Provide parameter for both ``reportPeriod`` and ``reportingEnd``.
 
-      Result report contains all raw CPU and memory metrics for the past N days until reportingEnd (including reportingEnd).
+      Result report contains raw CPU and memory metrics for the past N days until reportingEnd (including reportingEnd) in project ``namespace`` (if provided).
 
       .. code:: yaml
 
@@ -98,7 +100,7 @@ Deploy the API to Openshift
           reportPeriod: Day
           namespace: koku-metrics-operator
 
-      Create one of the two Reports above you just defined
+      Create one of the two Reports above you just defined:
 
       .. code:: shell
 
@@ -107,7 +109,8 @@ Deploy the API to Openshift
           oc apply -f apis/report/config/samples/batch_v1_report.yaml
 
 
-      For example, access the Report ``daily-report-sample`` on namespace ``report-system``
+      Access the Report by identifying Report by name and namespace it was created.
+      For example, to access ``daily-report-sample`` on namespace ``report-system``:
 
       .. code:: shell
 
